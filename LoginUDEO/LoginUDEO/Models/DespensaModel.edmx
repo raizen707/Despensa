@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DespensaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bodega">
+          <Key>
+            <PropertyRef Name="idBodega" />
+          </Key>
+          <Property Name="idBodega" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="50" />
+          <Property Name="estado" Type="int" />
+          <Property Name="telefono" Type="int" />
+          <Property Name="fax" Type="int" />
+        </EntityType>
+        <EntityType Name="bodegaProducto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+            <PropertyRef Name="idBodega" />
+          </Key>
+          <Property Name="idProducto" Type="int" Nullable="false" />
+          <Property Name="idBodega" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="estado">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreEstado" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+          </Key>
+          <Property Name="idProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="estado" Type="int" />
+        </EntityType>
+        <Association Name="FK_Bodega_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="0..1" />
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="Bodega">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_Bodega">
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bodega">
+              <PropertyRef Name="idBodega" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="idBodega" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="idProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Producto_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DespensaModelStoreContainer">
+          <EntitySet Name="Bodega" EntityType="Self.Bodega" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bodegaProducto" EntityType="Self.bodegaProducto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="estado" EntityType="Self.estado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bodega_estado" Association="Self.FK_Bodega_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="Bodega" EntitySet="Bodega" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_Bodega" Association="Self.FK_bodegaProducto_Bodega">
+            <End Role="Bodega" EntitySet="Bodega" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_estado" Association="Self.FK_bodegaProducto_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_Producto" Association="Self.FK_bodegaProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Producto_estado" Association="Self.FK_Producto_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DespensaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bodega">
+          <Key>
+            <PropertyRef Name="idBodega" />
+          </Key>
+          <Property Name="idBodega" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="telefono" Type="Int32" />
+          <Property Name="fax" Type="Int32" />
+          <NavigationProperty Name="estado1" Relationship="Self.FK_Bodega_estado" FromRole="Bodega" ToRole="estado" />
+          <NavigationProperty Name="bodegaProducto" Relationship="Self.FK_bodegaProducto_Bodega" FromRole="Bodega" ToRole="bodegaProducto" />
+        </EntityType>
+        <EntityType Name="bodegaProducto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+            <PropertyRef Name="idBodega" />
+          </Key>
+          <Property Name="idProducto" Type="Int32" Nullable="false" />
+          <Property Name="idBodega" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bodega" Relationship="Self.FK_bodegaProducto_Bodega" FromRole="bodegaProducto" ToRole="Bodega" />
+          <NavigationProperty Name="estado1" Relationship="Self.FK_bodegaProducto_estado" FromRole="bodegaProducto" ToRole="estado" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_bodegaProducto_Producto" FromRole="bodegaProducto" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="estado">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreEstado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Bodega" Relationship="Self.FK_Bodega_estado" FromRole="estado" ToRole="Bodega" />
+          <NavigationProperty Name="bodegaProducto" Relationship="Self.FK_bodegaProducto_estado" FromRole="estado" ToRole="bodegaProducto" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_estado" FromRole="estado" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+          </Key>
+          <Property Name="idProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <NavigationProperty Name="bodegaProducto" Relationship="Self.FK_bodegaProducto_Producto" FromRole="Producto" ToRole="bodegaProducto" />
+          <NavigationProperty Name="estado1" Relationship="Self.FK_Producto_estado" FromRole="Producto" ToRole="estado" />
+        </EntityType>
+        <Association Name="FK_Bodega_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="0..1" />
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="Bodega">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_Bodega">
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bodega">
+              <PropertyRef Name="idBodega" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="idBodega" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bodegaProducto_Producto">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="bodegaProducto" Type="Self.bodegaProducto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="bodegaProducto">
+              <PropertyRef Name="idProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Producto_estado">
+          <End Role="estado" Type="Self.estado" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="estado">
+              <PropertyRef Name="idEstado" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DespensaEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bodega" EntityType="Self.Bodega" />
+          <EntitySet Name="bodegaProducto" EntityType="Self.bodegaProducto" />
+          <EntitySet Name="estado" EntityType="Self.estado" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <AssociationSet Name="FK_Bodega_estado" Association="Self.FK_Bodega_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="Bodega" EntitySet="Bodega" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_Bodega" Association="Self.FK_bodegaProducto_Bodega">
+            <End Role="Bodega" EntitySet="Bodega" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_estado" Association="Self.FK_bodegaProducto_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bodegaProducto_Producto" Association="Self.FK_bodegaProducto_Producto">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="bodegaProducto" EntitySet="bodegaProducto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Producto_estado" Association="Self.FK_Producto_estado">
+            <End Role="estado" EntitySet="estado" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DespensaModelStoreContainer" CdmEntityContainer="DespensaEntities1">
+          <EntitySetMapping Name="Bodega">
+            <EntityTypeMapping TypeName="DespensaModel.Bodega">
+              <MappingFragment StoreEntitySet="Bodega">
+                <ScalarProperty Name="idBodega" ColumnName="idBodega" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="fax" ColumnName="fax" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bodegaProducto">
+            <EntityTypeMapping TypeName="DespensaModel.bodegaProducto">
+              <MappingFragment StoreEntitySet="bodegaProducto">
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="idBodega" ColumnName="idBodega" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="estado">
+            <EntityTypeMapping TypeName="DespensaModel.estado">
+              <MappingFragment StoreEntitySet="estado">
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="nombreEstado" ColumnName="nombreEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="DespensaModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
